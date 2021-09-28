@@ -40,3 +40,5 @@ for w in 0..8 {
     }
 }
 ```
+
+License: MIT OR Apache-2.0
