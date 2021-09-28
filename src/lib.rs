@@ -45,12 +45,14 @@ mod shape;
 pub use const_shape::*;
 pub use shape::*;
 
-/// Translates a vector `V` (without an unspecified number of dimensions) into a single number `T` that can be used for linear
-/// indexing.
+/// The shape of an array with unspecified dimensionality.
 pub trait AbstractShape<T, V> {
     /// The number of elements in an array with this shape.
     fn size(&self) -> T;
+    /// Translates a vector `V` (with an unspecified number of dimensions) into a single number `T` that can be used for
+    /// linear indexing.
     fn linearize(&self, p: V) -> T;
+    /// The inverse of `linearize`.
     fn delinearize(&self, i: T) -> V;
 }
 
