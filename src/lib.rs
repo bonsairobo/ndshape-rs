@@ -1,5 +1,18 @@
 //! Simple, fast linearization of nonnegative 2D, 3D, and 4D coordinates.
 //!
+//! The canonical choice of linearization function is row-major, i.e. stepping linearly through an N dimensional array would
+//! step by X first, then Y, then Z, etc, assuming that `[T; N]` coordinates are provided as `[X, Y, Z, ...]`. More explicitly:
+//!
+//! ```
+//! linearize([x, y, z, ...]) = x + X_SIZE * y + X_SIZE * Y_SIZE * z + ...
+//! ```
+//!
+//! Of course, to achieve a different layout, one only needs to choose a different permutation of coordinates. For example,
+//! column-major layout would require coordinates specified as `[..., Z, Y, X]`. For a 3D layout where each Y level set is
+//! contiguous in memory, either layout `[X, Z, Y]` or `[Z, X, Y]` would work.
+//!
+//! # Code Example
+//!
 //! ```
 //! use ndshape::{Shape, ConstShape3u32, ConstShape4u32, ConstPow2Shape3u32, Shape3u32};
 //!
