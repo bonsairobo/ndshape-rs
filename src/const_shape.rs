@@ -37,6 +37,11 @@ impl_const_shape2!(ConstShape2u16, u16);
 impl_const_shape2!(ConstShape2u32, u32);
 impl_const_shape2!(ConstShape2u64, u64);
 
+impl_const_shape2!(ConstShape2i8, i8);
+impl_const_shape2!(ConstShape2i16, i16);
+impl_const_shape2!(ConstShape2i32, i32);
+impl_const_shape2!(ConstShape2i64, i64);
+
 macro_rules! impl_const_shape3 {
     ($name:ident, $scalar:ty) => {
         #[derive(Clone, Debug, Copy, Eq, PartialEq)]
@@ -76,6 +81,11 @@ impl_const_shape3!(ConstShape3u8, u8);
 impl_const_shape3!(ConstShape3u16, u16);
 impl_const_shape3!(ConstShape3u32, u32);
 impl_const_shape3!(ConstShape3u64, u64);
+
+impl_const_shape3!(ConstShape3i8, i8);
+impl_const_shape3!(ConstShape3i16, i16);
+impl_const_shape3!(ConstShape3i32, i32);
+impl_const_shape3!(ConstShape3i64, i64);
 
 macro_rules! impl_const_shape4 {
     ($name:ident, $scalar:ty) => {
@@ -122,6 +132,11 @@ impl_const_shape4!(ConstShape4u16, u16);
 impl_const_shape4!(ConstShape4u32, u32);
 impl_const_shape4!(ConstShape4u64, u64);
 
+impl_const_shape4!(ConstShape4i8, i8);
+impl_const_shape4!(ConstShape4i16, i16);
+impl_const_shape4!(ConstShape4i32, i32);
+impl_const_shape4!(ConstShape4i64, i64);
+
 macro_rules! impl_const_pow2_shape2 {
     ($name:ident, $scalar:ty) => {
         #[derive(Clone, Debug, Copy, Eq, PartialEq)]
@@ -157,6 +172,11 @@ impl_const_pow2_shape2!(ConstPow2Shape2u8, u8);
 impl_const_pow2_shape2!(ConstPow2Shape2u16, u16);
 impl_const_pow2_shape2!(ConstPow2Shape2u32, u32);
 impl_const_pow2_shape2!(ConstPow2Shape2u64, u64);
+
+impl_const_pow2_shape2!(ConstPow2Shape2i8, i8);
+impl_const_pow2_shape2!(ConstPow2Shape2i16, i16);
+impl_const_pow2_shape2!(ConstPow2Shape2i32, i32);
+impl_const_pow2_shape2!(ConstPow2Shape2i64, i64);
 
 macro_rules! impl_const_pow2_shape3 {
     ($name:ident, $scalar:ty) => {
@@ -201,6 +221,11 @@ impl_const_pow2_shape3!(ConstPow2Shape3u8, u8);
 impl_const_pow2_shape3!(ConstPow2Shape3u16, u16);
 impl_const_pow2_shape3!(ConstPow2Shape3u32, u32);
 impl_const_pow2_shape3!(ConstPow2Shape3u64, u64);
+
+impl_const_pow2_shape3!(ConstPow2Shape3i8, i8);
+impl_const_pow2_shape3!(ConstPow2Shape3i16, i16);
+impl_const_pow2_shape3!(ConstPow2Shape3i32, i32);
+impl_const_pow2_shape3!(ConstPow2Shape3i64, i64);
 
 macro_rules! impl_const_pow2_shape4 {
     ($name:ident, $scalar:ty) => {
@@ -250,3 +275,8 @@ impl_const_pow2_shape4!(ConstPow2Shape4u8, u8);
 impl_const_pow2_shape4!(ConstPow2Shape4u16, u16);
 impl_const_pow2_shape4!(ConstPow2Shape4u32, u32);
 impl_const_pow2_shape4!(ConstPow2Shape4u64, u64);
+
+impl_const_pow2_shape4!(ConstPow2Shape4i8, i8);
+impl_const_pow2_shape4!(ConstPow2Shape4i16, i16);
+impl_const_pow2_shape4!(ConstPow2Shape4i32, i32);
+impl_const_pow2_shape4!(ConstPow2Shape4i64, i64);

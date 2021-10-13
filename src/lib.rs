@@ -3,7 +3,7 @@
 //! The canonical choice of linearization function is row-major, i.e. stepping linearly through an N dimensional array would
 //! step by X first, then Y, then Z, etc, assuming that `[T; N]` coordinates are provided as `[X, Y, Z, ...]`. More explicitly:
 //!
-//! ```
+//! ```text
 //! linearize([x, y, z, ...]) = x + X_SIZE * y + X_SIZE * Y_SIZE * z + ...
 //! ```
 //!

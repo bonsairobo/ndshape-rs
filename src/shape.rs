@@ -43,6 +43,11 @@ impl_shape2!(Shape2u16, u16);
 impl_shape2!(Shape2u32, u32);
 impl_shape2!(Shape2u64, u64);
 
+impl_shape2!(Shape2i8, i8);
+impl_shape2!(Shape2i16, i16);
+impl_shape2!(Shape2i32, i32);
+impl_shape2!(Shape2i64, i64);
+
 macro_rules! impl_shape3 {
     ($name:ident, $scalar:ident) => {
         #[derive(Clone)]
@@ -89,6 +94,11 @@ impl_shape3!(Shape3u8, u8);
 impl_shape3!(Shape3u16, u16);
 impl_shape3!(Shape3u32, u32);
 impl_shape3!(Shape3u64, u64);
+
+impl_shape3!(Shape3i8, i8);
+impl_shape3!(Shape3i16, i16);
+impl_shape3!(Shape3i32, i32);
+impl_shape3!(Shape3i64, i64);
 
 macro_rules! impl_shape4 {
     ($name:ident, $scalar:ident) => {
@@ -141,6 +151,11 @@ impl_shape4!(Shape4u16, u16);
 impl_shape4!(Shape4u32, u32);
 impl_shape4!(Shape4u64, u64);
 
+impl_shape4!(Shape4i8, i8);
+impl_shape4!(Shape4i16, i16);
+impl_shape4!(Shape4i32, i32);
+impl_shape4!(Shape4i64, i64);
+
 macro_rules! impl_pow2_shape2 {
     ($name:ident, $scalar:ty) => {
         #[derive(Clone)]
@@ -186,6 +201,11 @@ impl_pow2_shape2!(Pow2Shape2u8, u8);
 impl_pow2_shape2!(Pow2Shape2u16, u16);
 impl_pow2_shape2!(Pow2Shape2u32, u32);
 impl_pow2_shape2!(Pow2Shape2u64, u64);
+
+impl_pow2_shape2!(Pow2Shape2i8, i8);
+impl_pow2_shape2!(Pow2Shape2i16, i16);
+impl_pow2_shape2!(Pow2Shape2i32, i32);
+impl_pow2_shape2!(Pow2Shape2i64, i64);
 
 macro_rules! impl_pow2_shape3 {
     ($name:ident, $scalar:ty) => {
@@ -241,6 +261,11 @@ impl_pow2_shape3!(Pow2Shape3u8, u8);
 impl_pow2_shape3!(Pow2Shape3u16, u16);
 impl_pow2_shape3!(Pow2Shape3u32, u32);
 impl_pow2_shape3!(Pow2Shape3u64, u64);
+
+impl_pow2_shape3!(Pow2Shape3i8, i8);
+impl_pow2_shape3!(Pow2Shape3i16, i16);
+impl_pow2_shape3!(Pow2Shape3i32, i32);
+impl_pow2_shape3!(Pow2Shape3i64, i64);
 
 macro_rules! impl_pow2_shape4 {
     ($name:ident, $scalar:ty) => {
@@ -302,3 +327,8 @@ impl_pow2_shape4!(Pow2Shape4u8, u8);
 impl_pow2_shape4!(Pow2Shape4u16, u16);
 impl_pow2_shape4!(Pow2Shape4u32, u32);
 impl_pow2_shape4!(Pow2Shape4u64, u64);
+
+impl_pow2_shape4!(Pow2Shape4i8, i8);
+impl_pow2_shape4!(Pow2Shape4i16, i16);
+impl_pow2_shape4!(Pow2Shape4i32, i32);
+impl_pow2_shape4!(Pow2Shape4i64, i64);
