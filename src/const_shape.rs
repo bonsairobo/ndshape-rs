@@ -12,6 +12,7 @@ macro_rules! impl_const_shape2 {
         }
 
         impl<const X: $scalar, const Y: $scalar> ConstShape<$scalar, 2> for $name<X, Y> {
+            const ARRAY: [$scalar; 2] = [X, Y];
             const SIZE: $scalar = X * Y;
 
             #[inline]
@@ -55,6 +56,7 @@ macro_rules! impl_const_shape3 {
         impl<const X: $scalar, const Y: $scalar, const Z: $scalar> ConstShape<$scalar, 3>
             for $name<X, Y, Z>
         {
+            const ARRAY: [$scalar; 3] = [X, Y, Z];
             const SIZE: $scalar = X * Y * Z;
 
             #[inline]
@@ -103,6 +105,7 @@ macro_rules! impl_const_shape4 {
         impl<const X: $scalar, const Y: $scalar, const Z: $scalar, const W: $scalar>
             ConstShape<$scalar, 4> for $name<X, Y, Z, W>
         {
+            const ARRAY: [$scalar; 4] = [X, Y, Z, W];
             const SIZE: $scalar = X * Y * Z * W;
 
             #[inline]
@@ -150,6 +153,7 @@ macro_rules! impl_const_pow2_shape2 {
         }
 
         impl<const X: $scalar, const Y: $scalar> ConstShape<$scalar, 2> for $name<X, Y> {
+            const ARRAY: [$scalar; 2] = [1 << X, 1 << Y];
             const SIZE: $scalar = 1 << (X + Y);
 
             #[inline]
@@ -195,6 +199,7 @@ macro_rules! impl_const_pow2_shape3 {
         impl<const X: $scalar, const Y: $scalar, const Z: $scalar> ConstShape<$scalar, 3>
             for $name<X, Y, Z>
         {
+            const ARRAY: [$scalar; 3] = [1 << X, 1 << Y, 1 << Z];
             const SIZE: $scalar = 1 << (X + Y + Z);
 
             #[inline]
@@ -248,6 +253,7 @@ macro_rules! impl_const_pow2_shape4 {
         impl<const X: $scalar, const Y: $scalar, const Z: $scalar, const W: $scalar>
             ConstShape<$scalar, 4> for $name<X, Y, Z, W>
         {
+            const ARRAY: [$scalar; 4] = [1 << X, 1 << Y, 1 << Z, 1 << W];
             const SIZE: $scalar = 1 << (X + Y + Z + W);
 
             #[inline]

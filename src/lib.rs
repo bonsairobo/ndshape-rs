@@ -73,6 +73,8 @@ pub trait AbstractShape<T, V> {
 pub trait Shape<T, const N: usize> {
     /// The number of elements in an array with this shape.
     fn size(&self) -> T;
+    /// The dimensions of the shape.
+    fn as_array(&self) -> [T; N];
     /// Translate an `N`-dimensional vector into a single number `T` that can be used for linear indexing.
     fn linearize(&self, p: [T; N]) -> T;
     /// The inverse of `linearize`.
@@ -83,6 +85,8 @@ pub trait Shape<T, const N: usize> {
 pub trait ConstShape<T, const N: usize> {
     /// The number of elements in an array with this shape.
     const SIZE: T;
+    /// The dimensions of the shape.
+    const ARRAY: [T; N];
     /// Translate an `N`-dimensional vector into a single number `T` that can be used for linear indexing.
     fn linearize(p: [T; N]) -> T;
     /// The inverse of `linearize`.
@@ -114,6 +118,10 @@ where
     #[inline]
     fn size(&self) -> T {
         S::SIZE
+    }
+    #[inline]
+    fn as_array(&self) -> [T; N] {
+        S::ARRAY
     }
     #[inline]
     fn linearize(&self, p: [T; N]) -> T {
