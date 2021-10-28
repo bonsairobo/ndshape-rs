@@ -2,7 +2,7 @@
 name = "ndshape"
 description = "Simple, fast linearization of N-dimensional array indices"
 version = "0.2.0"
-edition = "2018"
+edition = "2021"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/bonsairobo/ndshape-rs"
 keywords = ["array", "multidimensional"]
