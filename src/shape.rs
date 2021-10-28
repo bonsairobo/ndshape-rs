@@ -32,7 +32,7 @@ macro_rules! impl_shape2 {
 
             #[inline]
             fn linearize(&self, p: [$scalar; 2]) -> $scalar {
-                p[0] + self.y_stride * p[1]
+                p[0] + self.y_stride.wrapping_mul(p[1])
             }
 
             #[inline]
@@ -89,7 +89,7 @@ macro_rules! impl_shape3 {
 
             #[inline]
             fn linearize(&self, p: [$scalar; 3]) -> $scalar {
-                p[0] + self.y_stride * p[1] + self.z_stride * p[2]
+                p[0] + self.y_stride.wrapping_mul(p[1]) + self.z_stride.wrapping_mul(p[2])
             }
 
             #[inline]
@@ -150,7 +150,9 @@ macro_rules! impl_shape4 {
 
             #[inline]
             fn linearize(&self, p: [$scalar; 4]) -> $scalar {
-                p[0] + self.y_stride * p[1] + self.z_stride * p[2] + self.w_stride * p[3]
+                p[0] + self.y_stride.wrapping_mul(p[1])
+                    + self.z_stride.wrapping_mul(p[2])
+                    + self.w_stride.wrapping_mul(p[3])
             }
 
             #[inline]
