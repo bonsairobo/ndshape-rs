@@ -8,7 +8,7 @@ macro_rules! impl_const_shape2 {
         pub struct $name<const X: $scalar, const Y: $scalar>;
 
         impl<const X: $scalar, const Y: $scalar> $name<X, Y> {
-            pub const Y_STRIDE: $scalar = X;
+            pub const STRIDES: [$scalar; 2] = [1, X];
         }
 
         impl<const X: $scalar, const Y: $scalar> ConstShape<$scalar, 2> for $name<X, Y> {
@@ -17,13 +17,13 @@ macro_rules! impl_const_shape2 {
 
             #[inline]
             fn linearize(p: [$scalar; 2]) -> $scalar {
-                p[0] + Self::Y_STRIDE.wrapping_mul(p[1])
+                p[0] + Self::STRIDES[1].wrapping_mul(p[1])
             }
 
             #[inline]
             fn delinearize(i: $scalar) -> [$scalar; 2] {
-                let y = i / Self::Y_STRIDE;
-                let x = i % Self::Y_STRIDE;
+                let y = i / Self::STRIDES[1];
+                let x = i % Self::STRIDES[1];
                 [x, y]
             }
         }
@@ -49,8 +49,7 @@ macro_rules! impl_const_shape3 {
         pub struct $name<const X: $scalar, const Y: $scalar, const Z: $scalar>;
 
         impl<const X: $scalar, const Y: $scalar, const Z: $scalar> $name<X, Y, Z> {
-            pub const Y_STRIDE: $scalar = X;
-            pub const Z_STRIDE: $scalar = X * Y;
+            pub const STRIDES: [$scalar; 3] = [1, X, X * Y];
         }
 
         impl<const X: $scalar, const Y: $scalar, const Z: $scalar> ConstShape<$scalar, 3>
@@ -61,15 +60,15 @@ macro_rules! impl_const_shape3 {
 
             #[inline]
             fn linearize(p: [$scalar; 3]) -> $scalar {
-                p[0] + Self::Y_STRIDE.wrapping_mul(p[1]) + Self::Z_STRIDE.wrapping_mul(p[2])
+                p[0] + Self::STRIDES[1].wrapping_mul(p[1]) + Self::STRIDES[2].wrapping_mul(p[2])
             }
 
             #[inline]
             fn delinearize(mut i: $scalar) -> [$scalar; 3] {
-                let z = i / Self::Z_STRIDE;
-                i -= z * Self::Z_STRIDE;
-                let y = i / Self::Y_STRIDE;
-                let x = i % Self::Y_STRIDE;
+                let z = i / Self::STRIDES[2];
+                i -= z * Self::STRIDES[2];
+                let y = i / Self::STRIDES[1];
+                let x = i % Self::STRIDES[1];
                 [x, y, z]
             }
         }
@@ -97,9 +96,7 @@ macro_rules! impl_const_shape4 {
         impl<const X: $scalar, const Y: $scalar, const Z: $scalar, const W: $scalar>
             $name<X, Y, Z, W>
         {
-            pub const Y_STRIDE: $scalar = X;
-            pub const Z_STRIDE: $scalar = X * Y;
-            pub const W_STRIDE: $scalar = X * Y * Z;
+            pub const STRIDES: [$scalar; 4] = [1, X, X * Y, X * Y * Z];
         }
 
         impl<const X: $scalar, const Y: $scalar, const Z: $scalar, const W: $scalar>
@@ -110,17 +107,20 @@ macro_rules! impl_const_shape4 {
 
             #[inline]
             fn linearize(p: [$scalar; 4]) -> $scalar {
-                p[0] + Self::Y_STRIDE.wrapping_mul(p[1]) + Self::Z_STRIDE.wrapping_mul(p[2]) + Self::W_STRIDE.wrapping_mul(p[3])
+                p[0] +
+                    Self::STRIDES[1].wrapping_mul(p[1]) +
+                    Self::STRIDES[2].wrapping_mul(p[2]) +
+                    Self::STRIDES[3].wrapping_mul(p[3])
             }
 
             #[inline]
             fn delinearize(mut i: $scalar) -> [$scalar; 4] {
-                let w = i / Self::W_STRIDE;
-                i -= w * Self::W_STRIDE;
-                let z = i / Self::Z_STRIDE;
-                i -= z * Self::Z_STRIDE;
-                let y = i / Self::Y_STRIDE;
-                let x = i % Self::Y_STRIDE;
+                let w = i / Self::STRIDES[3];
+                i -= w * Self::STRIDES[3];
+                let z = i / Self::STRIDES[2];
+                i -= z * Self::STRIDES[2];
+                let y = i / Self::STRIDES[1];
+                let x = i % Self::STRIDES[1];
                 [x, y, z, w]
             }
         }
@@ -146,10 +146,12 @@ macro_rules! impl_const_pow2_shape2 {
         pub struct $name<const X: $scalar, const Y: $scalar>;
 
         impl<const X: $scalar, const Y: $scalar> $name<X, Y> {
-            pub const Y_SHIFT: $scalar = X;
+            pub const SHIFTS: [$scalar; 2] = [0, X];
 
-            pub const X_MASK: $scalar = !(!0 << X);
-            pub const Y_MASK: $scalar = !(!0 << Y) << Self::Y_SHIFT;
+            pub const MASKS: [$scalar; 2] = [
+                !(!0 << X),
+                !(!0 << Y) << Self::SHIFTS[1]
+            ];
         }
 
         impl<const X: $scalar, const Y: $scalar> ConstShape<$scalar, 2> for $name<X, Y> {
@@ -158,12 +160,12 @@ macro_rules! impl_const_pow2_shape2 {
 
             #[inline]
             fn linearize(p: [$scalar; 2]) -> $scalar {
-                (p[1] << Self::Y_SHIFT) | p[0]
+                (p[1] << Self::SHIFTS[1]) | p[0]
             }
 
             #[inline]
             fn delinearize(i: $scalar) -> [$scalar; 2] {
-                [(i & Self::X_MASK), ((i & Self::Y_MASK) >> Self::Y_SHIFT)]
+                [(i & Self::MASKS[0]), ((i & Self::MASKS[1]) >> Self::SHIFTS[1])]
             }
         }
 
@@ -188,12 +190,13 @@ macro_rules! impl_const_pow2_shape3 {
         pub struct $name<const X: $scalar, const Y: $scalar, const Z: $scalar>;
 
         impl<const X: $scalar, const Y: $scalar, const Z: $scalar> $name<X, Y, Z> {
-            pub const Y_SHIFT: $scalar = X;
-            pub const Z_SHIFT: $scalar = X + Y;
+            pub const SHIFTS: [$scalar; 3] = [0, X, X + Y];
 
-            pub const X_MASK: $scalar = !(!0 << X);
-            pub const Y_MASK: $scalar = !(!0 << Y) << Self::Y_SHIFT;
-            pub const Z_MASK: $scalar = !(!0 << Z) << Self::Z_SHIFT;
+            pub const MASKS: [$scalar; 3] = [
+                !(!0 << X),
+                !(!0 << Y) << Self::SHIFTS[1],
+                !(!0 << Z) << Self::SHIFTS[2],
+            ];
         }
 
         impl<const X: $scalar, const Y: $scalar, const Z: $scalar> ConstShape<$scalar, 3>
@@ -204,15 +207,15 @@ macro_rules! impl_const_pow2_shape3 {
 
             #[inline]
             fn linearize(p: [$scalar; 3]) -> $scalar {
-                (p[2] << Self::Z_SHIFT) | (p[1] << Self::Y_SHIFT) | p[0]
+                (p[2] << Self::SHIFTS[2]) | (p[1] << Self::SHIFTS[1]) | p[0]
             }
 
             #[inline]
             fn delinearize(i: $scalar) -> [$scalar; 3] {
                 [
-                    (i & Self::X_MASK),
-                    ((i & Self::Y_MASK) >> Self::Y_SHIFT),
-                    ((i & Self::Z_MASK) >> Self::Z_SHIFT),
+                    (i & Self::MASKS[0]),
+                    ((i & Self::MASKS[1]) >> Self::SHIFTS[1]),
+                    ((i & Self::MASKS[2]) >> Self::SHIFTS[2]),
                 ]
             }
         }
@@ -240,14 +243,14 @@ macro_rules! impl_const_pow2_shape4 {
         impl<const X: $scalar, const Y: $scalar, const Z: $scalar, const W: $scalar>
             $name<X, Y, Z, W>
         {
-            pub const Y_SHIFT: $scalar = X;
-            pub const Z_SHIFT: $scalar = X + Y;
-            pub const W_SHIFT: $scalar = X + Y + Z;
+            pub const SHIFTS: [$scalar; 4] = [0, X, X + Y, X + Y + Z];
 
-            pub const X_MASK: $scalar = !(!0 << X);
-            pub const Y_MASK: $scalar = !(!0 << Y) << Self::Y_SHIFT;
-            pub const Z_MASK: $scalar = !(!0 << Z) << Self::Z_SHIFT;
-            pub const W_MASK: $scalar = !(!0 << Z) << Self::W_SHIFT;
+            pub const MASKS: [$scalar; 4] = [
+                !(!0 << X),
+                !(!0 << Y) << Self::SHIFTS[1],
+                !(!0 << Z) << Self::SHIFTS[2],
+                !(!0 << W) << Self::SHIFTS[3],
+            ];
         }
 
         impl<const X: $scalar, const Y: $scalar, const Z: $scalar, const W: $scalar>
@@ -258,16 +261,16 @@ macro_rules! impl_const_pow2_shape4 {
 
             #[inline]
             fn linearize(p: [$scalar; 4]) -> $scalar {
-                (p[3] << Self::W_SHIFT) | (p[2] << Self::Z_SHIFT) | (p[1] << Self::Y_SHIFT) | p[0]
+                (p[3] << Self::SHIFTS[3]) | (p[2] << Self::SHIFTS[2]) | (p[1] << Self::SHIFTS[1]) | p[0]
             }
 
             #[inline]
             fn delinearize(i: $scalar) -> [$scalar; 4] {
                 [
-                    (i & Self::X_MASK),
-                    ((i & Self::Y_MASK) >> Self::Y_SHIFT),
-                    ((i & Self::Z_MASK) >> Self::Z_SHIFT),
-                    ((i & Self::W_MASK) >> Self::W_SHIFT),
+                    (i & Self::MASKS[0]),
+                    ((i & Self::MASKS[1]) >> Self::SHIFTS[1]),
+                    ((i & Self::MASKS[2]) >> Self::SHIFTS[2]),
+                    ((i & Self::MASKS[3]) >> Self::SHIFTS[3]),
                 ]
             }
         }

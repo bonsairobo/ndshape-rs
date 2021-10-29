@@ -5,16 +5,16 @@ macro_rules! impl_shape2 {
         #[derive(Clone)]
         pub struct $name {
             array: [$scalar; 2],
+            strides: [$scalar; 2],
             size: $scalar,
-            y_stride: $scalar,
         }
 
         impl $name {
             pub fn new([x, y]: [$scalar; 2]) -> Self {
                 Self {
                     array: [x, y],
+                    strides: [1, x],
                     size: x * y,
-                    y_stride: x,
                 }
             }
         }
@@ -32,13 +32,13 @@ macro_rules! impl_shape2 {
 
             #[inline]
             fn linearize(&self, p: [$scalar; 2]) -> $scalar {
-                p[0] + self.y_stride.wrapping_mul(p[1])
+                p[0] + self.strides[1].wrapping_mul(p[1])
             }
 
             #[inline]
             fn delinearize(&self, i: $scalar) -> [$scalar; 2] {
-                let y = i / self.y_stride;
-                let x = i % self.y_stride;
+                let y = i / self.strides[1];
+                let x = i % self.strides[1];
                 [x, y]
             }
         }
@@ -60,18 +60,16 @@ macro_rules! impl_shape3 {
         #[derive(Clone)]
         pub struct $name {
             array: [$scalar; 3],
+            strides: [$scalar; 3],
             size: $scalar,
-            y_stride: $scalar,
-            z_stride: $scalar,
         }
 
         impl $name {
             pub fn new([x, y, z]: [$scalar; 3]) -> Self {
                 Self {
                     array: [x, y, z],
+                    strides: [1, x, x * y],
                     size: x * y * z,
-                    y_stride: x,
-                    z_stride: x * y,
                 }
             }
         }
@@ -89,15 +87,15 @@ macro_rules! impl_shape3 {
 
             #[inline]
             fn linearize(&self, p: [$scalar; 3]) -> $scalar {
-                p[0] + self.y_stride.wrapping_mul(p[1]) + self.z_stride.wrapping_mul(p[2])
+                p[0] + self.strides[1].wrapping_mul(p[1]) + self.strides[2].wrapping_mul(p[2])
             }
 
             #[inline]
             fn delinearize(&self, mut i: $scalar) -> [$scalar; 3] {
-                let z = i / self.z_stride;
-                i -= z * self.z_stride;
-                let y = i / self.y_stride;
-                let x = i % self.y_stride;
+                let z = i / self.strides[2];
+                i -= z * self.strides[2];
+                let y = i / self.strides[1];
+                let x = i % self.strides[1];
                 [x, y, z]
             }
         }
@@ -119,20 +117,16 @@ macro_rules! impl_shape4 {
         #[derive(Clone)]
         pub struct $name {
             array: [$scalar; 4],
+            strides: [$scalar; 4],
             size: $scalar,
-            y_stride: $scalar,
-            z_stride: $scalar,
-            w_stride: $scalar,
         }
 
         impl $name {
             pub fn new([x, y, z, w]: [$scalar; 4]) -> Self {
                 Self {
                     array: [x, y, z, w],
+                    strides: [1, x, x * y, x * y * z],
                     size: x * y * z * w,
-                    y_stride: x,
-                    z_stride: x * y,
-                    w_stride: x * y * z,
                 }
             }
         }
@@ -150,19 +144,19 @@ macro_rules! impl_shape4 {
 
             #[inline]
             fn linearize(&self, p: [$scalar; 4]) -> $scalar {
-                p[0] + self.y_stride.wrapping_mul(p[1])
-                    + self.z_stride.wrapping_mul(p[2])
-                    + self.w_stride.wrapping_mul(p[3])
+                p[0] + self.strides[1].wrapping_mul(p[1])
+                    + self.strides[2].wrapping_mul(p[2])
+                    + self.strides[3].wrapping_mul(p[3])
             }
 
             #[inline]
             fn delinearize(&self, mut i: $scalar) -> [$scalar; 4] {
-                let w = i / self.w_stride;
-                i -= w * self.w_stride;
-                let z = i / self.z_stride;
-                i -= z * self.z_stride;
-                let y = i / self.y_stride;
-                let x = i % self.y_stride;
+                let w = i / self.strides[3];
+                i -= w * self.strides[3];
+                let z = i / self.strides[2];
+                i -= z * self.strides[2];
+                let y = i / self.strides[1];
+                let x = i % self.strides[1];
                 [x, y, z, w]
             }
         }
@@ -184,10 +178,9 @@ macro_rules! impl_pow2_shape2 {
         #[derive(Clone)]
         pub struct $name {
             array: [$scalar; 2],
+            shifts: [$scalar; 2],
+            masks: [$scalar; 2],
             size: $scalar,
-            y_shift: $scalar,
-            x_mask: $scalar,
-            y_mask: $scalar,
         }
 
         impl $name {
@@ -195,10 +188,9 @@ macro_rules! impl_pow2_shape2 {
                 let y_shift = x;
                 Self {
                     array: [1 << x, 1 << y],
+                    shifts: [0, y_shift],
                     size: 1 << x + y,
-                    y_shift,
-                    x_mask: !(!0 << x),
-                    y_mask: !(!0 << y) << y_shift,
+                    masks: [!(!0 << x), !(!0 << y) << y_shift],
                 }
             }
         }
@@ -216,12 +208,12 @@ macro_rules! impl_pow2_shape2 {
 
             #[inline]
             fn linearize(&self, p: [$scalar; 2]) -> $scalar {
-                (p[1] << self.y_shift) | p[0]
+                (p[1] << self.shifts[1]) | p[0]
             }
 
             #[inline]
             fn delinearize(&self, i: $scalar) -> [$scalar; 2] {
-                [i & self.x_mask, (i & self.y_mask) >> self.y_shift]
+                [i & self.masks[0], (i & self.masks[1]) >> self.shifts[1]]
             }
         }
     };
@@ -242,12 +234,9 @@ macro_rules! impl_pow2_shape3 {
         #[derive(Clone)]
         pub struct $name {
             array: [$scalar; 3],
+            shifts: [$scalar; 3],
+            masks: [$scalar; 3],
             size: $scalar,
-            y_shift: $scalar,
-            z_shift: $scalar,
-            x_mask: $scalar,
-            y_mask: $scalar,
-            z_mask: $scalar,
         }
 
         impl $name {
@@ -256,12 +245,9 @@ macro_rules! impl_pow2_shape3 {
                 let z_shift = x + y;
                 Self {
                     array: [1 << x, 1 << y, 1 << z],
+                    shifts: [0, y_shift, z_shift],
+                    masks: [!(!0 << x), !(!0 << y) << y_shift, !(!0 << z) << z_shift],
                     size: 1 << x + y + z,
-                    y_shift,
-                    z_shift,
-                    x_mask: !(!0 << x),
-                    y_mask: !(!0 << y) << y_shift,
-                    z_mask: !(!0 << z) << z_shift,
                 }
             }
         }
@@ -279,15 +265,15 @@ macro_rules! impl_pow2_shape3 {
 
             #[inline]
             fn linearize(&self, p: [$scalar; 3]) -> $scalar {
-                (p[2] << self.z_shift) | (p[1] << self.y_shift) | p[0]
+                (p[2] << self.shifts[2]) | (p[1] << self.shifts[1]) | p[0]
             }
 
             #[inline]
             fn delinearize(&self, i: $scalar) -> [$scalar; 3] {
                 [
-                    i & self.x_mask,
-                    (i & self.y_mask) >> self.y_shift,
-                    (i & self.z_mask) >> self.z_shift,
+                    i & self.masks[0],
+                    (i & self.masks[1]) >> self.shifts[1],
+                    (i & self.masks[2]) >> self.shifts[2],
                 ]
             }
         }
@@ -309,14 +295,9 @@ macro_rules! impl_pow2_shape4 {
         #[derive(Clone)]
         pub struct $name {
             array: [$scalar; 4],
+            shifts: [$scalar; 4],
+            masks: [$scalar; 4],
             size: $scalar,
-            y_shift: $scalar,
-            z_shift: $scalar,
-            w_shift: $scalar,
-            x_mask: $scalar,
-            y_mask: $scalar,
-            z_mask: $scalar,
-            w_mask: $scalar,
         }
 
         impl $name {
@@ -327,13 +308,13 @@ macro_rules! impl_pow2_shape4 {
                 Self {
                     array: [1 << x, 1 << y, 1 << z, 1 << w],
                     size: 1 << (x + y + z + w),
-                    y_shift,
-                    z_shift,
-                    w_shift,
-                    x_mask: !(!0 << x),
-                    y_mask: !(!0 << y) << y_shift,
-                    z_mask: !(!0 << z) << z_shift,
-                    w_mask: !(!0 << w) << w_shift,
+                    shifts: [0, y_shift, z_shift, w_shift],
+                    masks: [
+                        !(!0 << x),
+                        !(!0 << y) << y_shift,
+                        !(!0 << z) << z_shift,
+                        !(!0 << w) << w_shift,
+                    ],
                 }
             }
         }
@@ -351,16 +332,16 @@ macro_rules! impl_pow2_shape4 {
 
             #[inline]
             fn linearize(&self, p: [$scalar; 4]) -> $scalar {
-                (p[2] << self.z_shift) | (p[1] << self.y_shift) | p[0]
+                (p[2] << self.shifts[2]) | (p[1] << self.shifts[1]) | p[0]
             }
 
             #[inline]
             fn delinearize(&self, i: $scalar) -> [$scalar; 4] {
                 [
-                    i & self.x_mask,
-                    (i & self.y_mask) >> self.y_shift,
-                    (i & self.z_mask) >> self.z_shift,
-                    (i & self.w_mask) >> self.w_shift,
+                    i & self.masks[0],
+                    (i & self.masks[1]) >> self.shifts[1],
+                    (i & self.masks[2]) >> self.shifts[2],
+                    (i & self.masks[3]) >> self.shifts[3],
                 ]
             }
         }
