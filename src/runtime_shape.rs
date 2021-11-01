@@ -1,15 +1,15 @@
 use crate::Shape;
 
-macro_rules! impl_shape2 {
-    ($name:ident, $scalar:ident) => {
-        #[derive(Clone)]
-        pub struct $name {
-            array: [$scalar; 2],
-            strides: [$scalar; 2],
-            size: $scalar,
-        }
+#[derive(Clone)]
+pub struct RuntimeShape<C, const N: usize> {
+    array: [C; N],
+    strides: [C; N],
+    size: C,
+}
 
-        impl $name {
+macro_rules! impl_shape2 {
+    ($scalar:ident) => {
+        impl RuntimeShape<$scalar, 2> {
             pub fn new([x, y]: [$scalar; 2]) -> Self {
                 Self {
                     array: [x, y],
@@ -19,7 +19,7 @@ macro_rules! impl_shape2 {
             }
         }
 
-        impl Shape<$scalar, 2> for $name {
+        impl Shape<$scalar, 2> for RuntimeShape<$scalar, 2> {
             #[inline]
             fn as_array(&self) -> [$scalar; 2] {
                 self.array
@@ -45,26 +45,19 @@ macro_rules! impl_shape2 {
     };
 }
 
-impl_shape2!(Shape2u8, u8);
-impl_shape2!(Shape2u16, u16);
-impl_shape2!(Shape2u32, u32);
-impl_shape2!(Shape2u64, u64);
+impl_shape2!(u8);
+impl_shape2!(u16);
+impl_shape2!(u32);
+impl_shape2!(u64);
 
-impl_shape2!(Shape2i8, i8);
-impl_shape2!(Shape2i16, i16);
-impl_shape2!(Shape2i32, i32);
-impl_shape2!(Shape2i64, i64);
+impl_shape2!(i8);
+impl_shape2!(i16);
+impl_shape2!(i32);
+impl_shape2!(i64);
 
 macro_rules! impl_shape3 {
-    ($name:ident, $scalar:ident) => {
-        #[derive(Clone)]
-        pub struct $name {
-            array: [$scalar; 3],
-            strides: [$scalar; 3],
-            size: $scalar,
-        }
-
-        impl $name {
+    ($scalar:ident) => {
+        impl RuntimeShape<$scalar, 3> {
             pub fn new([x, y, z]: [$scalar; 3]) -> Self {
                 Self {
                     array: [x, y, z],
@@ -74,7 +67,7 @@ macro_rules! impl_shape3 {
             }
         }
 
-        impl Shape<$scalar, 3> for $name {
+        impl Shape<$scalar, 3> for RuntimeShape<$scalar, 3> {
             #[inline]
             fn as_array(&self) -> [$scalar; 3] {
                 self.array
@@ -102,26 +95,19 @@ macro_rules! impl_shape3 {
     };
 }
 
-impl_shape3!(Shape3u8, u8);
-impl_shape3!(Shape3u16, u16);
-impl_shape3!(Shape3u32, u32);
-impl_shape3!(Shape3u64, u64);
+impl_shape3!(u8);
+impl_shape3!(u16);
+impl_shape3!(u32);
+impl_shape3!(u64);
 
-impl_shape3!(Shape3i8, i8);
-impl_shape3!(Shape3i16, i16);
-impl_shape3!(Shape3i32, i32);
-impl_shape3!(Shape3i64, i64);
+impl_shape3!(i8);
+impl_shape3!(i16);
+impl_shape3!(i32);
+impl_shape3!(i64);
 
 macro_rules! impl_shape4 {
-    ($name:ident, $scalar:ident) => {
-        #[derive(Clone)]
-        pub struct $name {
-            array: [$scalar; 4],
-            strides: [$scalar; 4],
-            size: $scalar,
-        }
-
-        impl $name {
+    ($scalar:ident) => {
+        impl RuntimeShape<$scalar, 4> {
             pub fn new([x, y, z, w]: [$scalar; 4]) -> Self {
                 Self {
                     array: [x, y, z, w],
@@ -131,7 +117,7 @@ macro_rules! impl_shape4 {
             }
         }
 
-        impl Shape<$scalar, 4> for $name {
+        impl Shape<$scalar, 4> for RuntimeShape<$scalar, 4> {
             #[inline]
             fn as_array(&self) -> [$scalar; 4] {
                 self.array
@@ -163,27 +149,27 @@ macro_rules! impl_shape4 {
     };
 }
 
-impl_shape4!(Shape4u8, u8);
-impl_shape4!(Shape4u16, u16);
-impl_shape4!(Shape4u32, u32);
-impl_shape4!(Shape4u64, u64);
+impl_shape4!(u8);
+impl_shape4!(u16);
+impl_shape4!(u32);
+impl_shape4!(u64);
 
-impl_shape4!(Shape4i8, i8);
-impl_shape4!(Shape4i16, i16);
-impl_shape4!(Shape4i32, i32);
-impl_shape4!(Shape4i64, i64);
+impl_shape4!(i8);
+impl_shape4!(i16);
+impl_shape4!(i32);
+impl_shape4!(i64);
+
+#[derive(Clone)]
+pub struct RuntimePow2Shape<C, const N: usize> {
+    array: [C; N],
+    shifts: [C; N],
+    masks: [C; N],
+    size: C,
+}
 
 macro_rules! impl_pow2_shape2 {
-    ($name:ident, $scalar:ty) => {
-        #[derive(Clone)]
-        pub struct $name {
-            array: [$scalar; 2],
-            shifts: [$scalar; 2],
-            masks: [$scalar; 2],
-            size: $scalar,
-        }
-
-        impl $name {
+    ($scalar:ty) => {
+        impl RuntimePow2Shape<$scalar, 2> {
             pub fn new([x, y]: [$scalar; 2]) -> Self {
                 let y_shift = x;
                 Self {
@@ -195,7 +181,7 @@ macro_rules! impl_pow2_shape2 {
             }
         }
 
-        impl Shape<$scalar, 2> for $name {
+        impl Shape<$scalar, 2> for RuntimePow2Shape<$scalar, 2> {
             #[inline]
             fn as_array(&self) -> [$scalar; 2] {
                 self.array
@@ -219,27 +205,19 @@ macro_rules! impl_pow2_shape2 {
     };
 }
 
-impl_pow2_shape2!(Pow2Shape2u8, u8);
-impl_pow2_shape2!(Pow2Shape2u16, u16);
-impl_pow2_shape2!(Pow2Shape2u32, u32);
-impl_pow2_shape2!(Pow2Shape2u64, u64);
+impl_pow2_shape2!(u8);
+impl_pow2_shape2!(u16);
+impl_pow2_shape2!(u32);
+impl_pow2_shape2!(u64);
 
-impl_pow2_shape2!(Pow2Shape2i8, i8);
-impl_pow2_shape2!(Pow2Shape2i16, i16);
-impl_pow2_shape2!(Pow2Shape2i32, i32);
-impl_pow2_shape2!(Pow2Shape2i64, i64);
+impl_pow2_shape2!(i8);
+impl_pow2_shape2!(i16);
+impl_pow2_shape2!(i32);
+impl_pow2_shape2!(i64);
 
 macro_rules! impl_pow2_shape3 {
-    ($name:ident, $scalar:ty) => {
-        #[derive(Clone)]
-        pub struct $name {
-            array: [$scalar; 3],
-            shifts: [$scalar; 3],
-            masks: [$scalar; 3],
-            size: $scalar,
-        }
-
-        impl $name {
+    ($scalar:ty) => {
+        impl RuntimePow2Shape<$scalar, 3> {
             pub fn new([x, y, z]: [$scalar; 3]) -> Self {
                 let y_shift = x;
                 let z_shift = x + y;
@@ -252,7 +230,7 @@ macro_rules! impl_pow2_shape3 {
             }
         }
 
-        impl Shape<$scalar, 3> for $name {
+        impl Shape<$scalar, 3> for RuntimePow2Shape<$scalar, 3> {
             #[inline]
             fn as_array(&self) -> [$scalar; 3] {
                 self.array
@@ -280,27 +258,19 @@ macro_rules! impl_pow2_shape3 {
     };
 }
 
-impl_pow2_shape3!(Pow2Shape3u8, u8);
-impl_pow2_shape3!(Pow2Shape3u16, u16);
-impl_pow2_shape3!(Pow2Shape3u32, u32);
-impl_pow2_shape3!(Pow2Shape3u64, u64);
+impl_pow2_shape3!(u8);
+impl_pow2_shape3!(u16);
+impl_pow2_shape3!(u32);
+impl_pow2_shape3!(u64);
 
-impl_pow2_shape3!(Pow2Shape3i8, i8);
-impl_pow2_shape3!(Pow2Shape3i16, i16);
-impl_pow2_shape3!(Pow2Shape3i32, i32);
-impl_pow2_shape3!(Pow2Shape3i64, i64);
+impl_pow2_shape3!(i8);
+impl_pow2_shape3!(i16);
+impl_pow2_shape3!(i32);
+impl_pow2_shape3!(i64);
 
 macro_rules! impl_pow2_shape4 {
-    ($name:ident, $scalar:ty) => {
-        #[derive(Clone)]
-        pub struct $name {
-            array: [$scalar; 4],
-            shifts: [$scalar; 4],
-            masks: [$scalar; 4],
-            size: $scalar,
-        }
-
-        impl $name {
+    ($scalar:ty) => {
+        impl RuntimePow2Shape<$scalar, 4> {
             pub fn new([x, y, z, w]: [$scalar; 4]) -> Self {
                 let y_shift = x;
                 let z_shift = x + y;
@@ -319,7 +289,7 @@ macro_rules! impl_pow2_shape4 {
             }
         }
 
-        impl Shape<$scalar, 4> for $name {
+        impl Shape<$scalar, 4> for RuntimePow2Shape<$scalar, 4> {
             #[inline]
             fn as_array(&self) -> [$scalar; 4] {
                 self.array
@@ -348,12 +318,12 @@ macro_rules! impl_pow2_shape4 {
     };
 }
 
-impl_pow2_shape4!(Pow2Shape4u8, u8);
-impl_pow2_shape4!(Pow2Shape4u16, u16);
-impl_pow2_shape4!(Pow2Shape4u32, u32);
-impl_pow2_shape4!(Pow2Shape4u64, u64);
+impl_pow2_shape4!(u8);
+impl_pow2_shape4!(u16);
+impl_pow2_shape4!(u32);
+impl_pow2_shape4!(u64);
 
-impl_pow2_shape4!(Pow2Shape4i8, i8);
-impl_pow2_shape4!(Pow2Shape4i16, i16);
-impl_pow2_shape4!(Pow2Shape4i32, i32);
-impl_pow2_shape4!(Pow2Shape4i64, i64);
+impl_pow2_shape4!(i8);
+impl_pow2_shape4!(i16);
+impl_pow2_shape4!(i32);
+impl_pow2_shape4!(i64);

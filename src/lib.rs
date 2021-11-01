@@ -14,7 +14,7 @@
 //! # Example: Indexing Multidimensional Arrays
 //!
 //! ```
-//! use ndshape::{Shape, ConstShape3u32, ConstShape4u32, ConstPow2Shape3u32, Shape3u32};
+//! use ndshape::{Shape, ConstShape3u32, ConstShape4u32, ConstPow2Shape3u32, RuntimeShape};
 //!
 //! // An arbitrary shape.
 //! let shape = ConstShape3u32::<5, 6, 7>;
@@ -30,7 +30,7 @@
 //! assert_eq!(shape.delinearize(index), [1, 2, 3]);
 //!
 //! // A runtime shape.
-//! let shape = Shape3u32::new([5, 6, 7]);
+//! let shape = RuntimeShape::<u32, 3>::new([5, 6, 7]);
 //! let index = shape.linearize([1, 2, 3]);
 //! assert_eq!(index, 101);
 //! assert_eq!(shape.delinearize(index), [1, 2, 3]);
@@ -81,10 +81,10 @@
 //! ```
 
 mod const_shape;
-mod shape;
+mod runtime_shape;
 
 pub use const_shape::*;
-pub use shape::*;
+pub use runtime_shape::*;
 
 /// The shape of an array with unspecified dimensionality.
 pub trait AbstractShape<T, V> {
