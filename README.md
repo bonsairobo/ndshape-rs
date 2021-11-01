@@ -9,14 +9,14 @@ step by X first, then Y, then Z, etc, assuming that `[T; N]` coordinates are pro
 linearize([x, y, z, ...]) = x + X_SIZE * y + X_SIZE * Y_SIZE * z + ...
 ```
 
-Of course, to achieve a different layout, one only needs to choose a different permutation of coordinates. For example,
-column-major layout would require coordinates specified as `[..., Z, Y, X]`. For a 3D layout where each Y level set is
-contiguous in memory, either layout `[X, Z, Y]` or `[Z, X, Y]` would work.
+To achieve a different layout, one only needs to choose a different permutation of coordinates. For example, column-major
+layout would require coordinates specified as `[..., Z, Y, X]`. For a 3D layout where each Y level set is contiguous in
+memory, either layout `[X, Z, Y]` or `[Z, X, Y]` would work.
 
 ## Example: Indexing Multidimensional Arrays
 
 ```rust
-use ndshape::{Shape, ConstShape3u32, ConstShape4u32, ConstPow2Shape3u32, Shape3u32};
+use ndshape::{Shape, ConstShape3u32, ConstShape4u32, ConstPow2Shape3u32, RuntimeShape};
 
 // An arbitrary shape.
 let shape = ConstShape3u32::<5, 6, 7>;
@@ -32,7 +32,7 @@ assert_eq!(index, 0b011_10_1);
 assert_eq!(shape.delinearize(index), [1, 2, 3]);
 
 // A runtime shape.
-let shape = Shape3u32::new([5, 6, 7]);
+let shape = RuntimeShape::<u32, 3>::new([5, 6, 7]);
 let index = shape.linearize([1, 2, 3]);
 assert_eq!(index, 101);
 assert_eq!(shape.delinearize(index), [1, 2, 3]);

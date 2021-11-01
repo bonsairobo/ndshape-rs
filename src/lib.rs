@@ -7,9 +7,9 @@
 //! linearize([x, y, z, ...]) = x + X_SIZE * y + X_SIZE * Y_SIZE * z + ...
 //! ```
 //!
-//! Of course, to achieve a different layout, one only needs to choose a different permutation of coordinates. For example,
-//! column-major layout would require coordinates specified as `[..., Z, Y, X]`. For a 3D layout where each Y level set is
-//! contiguous in memory, either layout `[X, Z, Y]` or `[Z, X, Y]` would work.
+//! To achieve a different layout, one only needs to choose a different permutation of coordinates. For example, column-major
+//! layout would require coordinates specified as `[..., Z, Y, X]`. For a 3D layout where each Y level set is contiguous in
+//! memory, either layout `[X, Z, Y]` or `[Z, X, Y]` would work.
 //!
 //! # Example: Indexing Multidimensional Arrays
 //!
