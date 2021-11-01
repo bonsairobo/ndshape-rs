@@ -11,7 +11,9 @@ macro_rules! impl_const_shape2 {
             pub const STRIDES: [$scalar; 2] = [1, X];
         }
 
-        impl<const X: $scalar, const Y: $scalar> ConstShape<$scalar, 2> for $name<X, Y> {
+        impl<const X: $scalar, const Y: $scalar> ConstShape<2> for $name<X, Y> {
+            type Coord = $scalar;
+
             const ARRAY: [$scalar; 2] = [X, Y];
             const SIZE: $scalar = X * Y;
 
@@ -29,7 +31,7 @@ macro_rules! impl_const_shape2 {
         }
 
         assert_impl_all!($name<1, 1>: AbstractShape<$scalar, [$scalar; 2]>);
-        assert_impl_all!($name<1, 1>: Shape<$scalar, 2>);
+        assert_impl_all!($name<1, 1>: Shape<2>);
     };
 }
 
@@ -52,9 +54,11 @@ macro_rules! impl_const_shape3 {
             pub const STRIDES: [$scalar; 3] = [1, X, X * Y];
         }
 
-        impl<const X: $scalar, const Y: $scalar, const Z: $scalar> ConstShape<$scalar, 3>
+        impl<const X: $scalar, const Y: $scalar, const Z: $scalar> ConstShape<3>
             for $name<X, Y, Z>
         {
+            type Coord = $scalar;
+
             const ARRAY: [$scalar; 3] = [X, Y, Z];
             const SIZE: $scalar = X * Y * Z;
 
@@ -74,7 +78,7 @@ macro_rules! impl_const_shape3 {
         }
 
         assert_impl_all!($name<1, 1, 1>: AbstractShape<$scalar, [$scalar; 3]>);
-        assert_impl_all!($name<1, 1, 1>: Shape<$scalar, 3>);
+        assert_impl_all!($name<1, 1, 1>: Shape<3>);
     };
 }
 
@@ -100,8 +104,10 @@ macro_rules! impl_const_shape4 {
         }
 
         impl<const X: $scalar, const Y: $scalar, const Z: $scalar, const W: $scalar>
-            ConstShape<$scalar, 4> for $name<X, Y, Z, W>
+            ConstShape<4> for $name<X, Y, Z, W>
         {
+            type Coord = $scalar;
+
             const ARRAY: [$scalar; 4] = [X, Y, Z, W];
             const SIZE: $scalar = X * Y * Z * W;
 
@@ -126,7 +132,7 @@ macro_rules! impl_const_shape4 {
         }
 
         assert_impl_all!($name<1, 1, 1, 1>: AbstractShape<$scalar, [$scalar; 4]>);
-        assert_impl_all!($name<1, 1, 1, 1>: Shape<$scalar, 4>);
+        assert_impl_all!($name<1, 1, 1, 1>: Shape<4>);
     };
 }
 
@@ -154,7 +160,9 @@ macro_rules! impl_const_pow2_shape2 {
             ];
         }
 
-        impl<const X: $scalar, const Y: $scalar> ConstShape<$scalar, 2> for $name<X, Y> {
+        impl<const X: $scalar, const Y: $scalar> ConstShape<2> for $name<X, Y> {
+            type Coord = $scalar;
+
             const ARRAY: [$scalar; 2] = [1 << X, 1 << Y];
             const SIZE: $scalar = 1 << (X + Y);
 
@@ -170,7 +178,7 @@ macro_rules! impl_const_pow2_shape2 {
         }
 
         assert_impl_all!($name<1, 1>: AbstractShape<$scalar, [$scalar; 2]>);
-        assert_impl_all!($name<1, 1>: Shape<$scalar, 2>);
+        assert_impl_all!($name<1, 1>: Shape<2>);
     };
 }
 
@@ -199,9 +207,11 @@ macro_rules! impl_const_pow2_shape3 {
             ];
         }
 
-        impl<const X: $scalar, const Y: $scalar, const Z: $scalar> ConstShape<$scalar, 3>
+        impl<const X: $scalar, const Y: $scalar, const Z: $scalar> ConstShape<3>
             for $name<X, Y, Z>
         {
+            type Coord = $scalar;
+
             const ARRAY: [$scalar; 3] = [1 << X, 1 << Y, 1 << Z];
             const SIZE: $scalar = 1 << (X + Y + Z);
 
@@ -221,7 +231,7 @@ macro_rules! impl_const_pow2_shape3 {
         }
 
         assert_impl_all!($name<1, 1, 1>: AbstractShape<$scalar, [$scalar; 3]>);
-        assert_impl_all!($name<1, 1, 1>: Shape<$scalar, 3>);
+        assert_impl_all!($name<1, 1, 1>: Shape<3>);
     };
 }
 
@@ -254,8 +264,10 @@ macro_rules! impl_const_pow2_shape4 {
         }
 
         impl<const X: $scalar, const Y: $scalar, const Z: $scalar, const W: $scalar>
-            ConstShape<$scalar, 4> for $name<X, Y, Z, W>
+            ConstShape<4> for $name<X, Y, Z, W>
         {
+            type Coord = $scalar;
+
             const ARRAY: [$scalar; 4] = [1 << X, 1 << Y, 1 << Z, 1 << W];
             const SIZE: $scalar = 1 << (X + Y + Z + W);
 
@@ -276,7 +288,7 @@ macro_rules! impl_const_pow2_shape4 {
         }
 
         assert_impl_all!($name<1, 1, 1, 1>: AbstractShape<$scalar, [$scalar; 4]>);
-        assert_impl_all!($name<1, 1, 1, 1>: Shape<$scalar, 4>);
+        assert_impl_all!($name<1, 1, 1, 1>: Shape<4>);
     };
 }
 

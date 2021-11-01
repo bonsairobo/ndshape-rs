@@ -19,7 +19,9 @@ macro_rules! impl_shape2 {
             }
         }
 
-        impl Shape<$scalar, 2> for RuntimeShape<$scalar, 2> {
+        impl Shape<2> for RuntimeShape<$scalar, 2> {
+            type Coord = $scalar;
+
             #[inline]
             fn as_array(&self) -> [$scalar; 2] {
                 self.array
@@ -67,7 +69,9 @@ macro_rules! impl_shape3 {
             }
         }
 
-        impl Shape<$scalar, 3> for RuntimeShape<$scalar, 3> {
+        impl Shape<3> for RuntimeShape<$scalar, 3> {
+            type Coord = $scalar;
+
             #[inline]
             fn as_array(&self) -> [$scalar; 3] {
                 self.array
@@ -117,7 +121,9 @@ macro_rules! impl_shape4 {
             }
         }
 
-        impl Shape<$scalar, 4> for RuntimeShape<$scalar, 4> {
+        impl Shape<4> for RuntimeShape<$scalar, 4> {
+            type Coord = $scalar;
+
             #[inline]
             fn as_array(&self) -> [$scalar; 4] {
                 self.array
@@ -181,7 +187,9 @@ macro_rules! impl_pow2_shape2 {
             }
         }
 
-        impl Shape<$scalar, 2> for RuntimePow2Shape<$scalar, 2> {
+        impl Shape<2> for RuntimePow2Shape<$scalar, 2> {
+            type Coord = $scalar;
+
             #[inline]
             fn as_array(&self) -> [$scalar; 2] {
                 self.array
@@ -230,7 +238,9 @@ macro_rules! impl_pow2_shape3 {
             }
         }
 
-        impl Shape<$scalar, 3> for RuntimePow2Shape<$scalar, 3> {
+        impl Shape<3> for RuntimePow2Shape<$scalar, 3> {
+            type Coord = $scalar;
+
             #[inline]
             fn as_array(&self) -> [$scalar; 3] {
                 self.array
@@ -289,7 +299,9 @@ macro_rules! impl_pow2_shape4 {
             }
         }
 
-        impl Shape<$scalar, 4> for RuntimePow2Shape<$scalar, 4> {
+        impl Shape<4> for RuntimePow2Shape<$scalar, 4> {
+            type Coord = $scalar;
+
             #[inline]
             fn as_array(&self) -> [$scalar; 4] {
                 self.array

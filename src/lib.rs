@@ -87,76 +87,82 @@ pub use const_shape::*;
 pub use runtime_shape::*;
 
 /// The shape of an array with unspecified dimensionality.
-pub trait AbstractShape<T, V> {
+pub trait AbstractShape<Coord, Vector> {
     /// The number of elements in an array with this shape.
-    fn size(&self) -> T;
+    fn size(&self) -> Coord;
     /// Translates a vector `V` (with an unspecified number of dimensions) into a single number `T` that can be used for
     /// linear indexing.
-    fn linearize(&self, p: V) -> T;
+    fn linearize(&self, p: Vector) -> Coord;
     /// The inverse of `linearize`.
-    fn delinearize(&self, i: T) -> V;
+    fn delinearize(&self, i: Coord) -> Vector;
 }
 
 /// The shape of an `N`-dimensional array.
-pub trait Shape<T, const N: usize> {
+pub trait Shape<const N: usize> {
+    type Coord;
+
     /// The number of elements in an array with this shape.
-    fn size(&self) -> T;
+    fn size(&self) -> Self::Coord;
     /// The dimensions of the shape.
-    fn as_array(&self) -> [T; N];
+    fn as_array(&self) -> [Self::Coord; N];
     /// Translate an `N`-dimensional vector into a single number `T` that can be used for linear indexing.
-    fn linearize(&self, p: [T; N]) -> T;
+    fn linearize(&self, p: [Self::Coord; N]) -> Self::Coord;
     /// The inverse of `linearize`.
-    fn delinearize(&self, i: T) -> [T; N];
+    fn delinearize(&self, i: Self::Coord) -> [Self::Coord; N];
 }
 
 /// A constant shape of an `N`-dimensional array.
-pub trait ConstShape<T, const N: usize> {
+pub trait ConstShape<const N: usize> {
+    type Coord;
+
     /// The number of elements in an array with this shape.
-    const SIZE: T;
+    const SIZE: Self::Coord;
     /// The dimensions of the shape.
-    const ARRAY: [T; N];
+    const ARRAY: [Self::Coord; N];
     /// Translate an `N`-dimensional vector into a single number `T` that can be used for linear indexing.
-    fn linearize(p: [T; N]) -> T;
+    fn linearize(p: [Self::Coord; N]) -> Self::Coord;
     /// The inverse of `linearize`.
-    fn delinearize(i: T) -> [T; N];
+    fn delinearize(i: Self::Coord) -> [Self::Coord; N];
 }
 
-impl<S, T, const N: usize> AbstractShape<T, [T; N]> for S
+impl<S, const N: usize> AbstractShape<S::Coord, [S::Coord; N]> for S
 where
-    S: Shape<T, N>,
+    S: Shape<N>,
 {
     #[inline]
-    fn size(&self) -> T {
+    fn size(&self) -> S::Coord {
         self.size()
     }
     #[inline]
-    fn linearize(&self, p: [T; N]) -> T {
+    fn linearize(&self, p: [S::Coord; N]) -> S::Coord {
         self.linearize(p)
     }
     #[inline]
-    fn delinearize(&self, i: T) -> [T; N] {
+    fn delinearize(&self, i: S::Coord) -> [S::Coord; N] {
         self.delinearize(i)
     }
 }
 
-impl<S, T, const N: usize> Shape<T, N> for S
+impl<S, const N: usize> Shape<N> for S
 where
-    S: ConstShape<T, N>,
+    S: ConstShape<N>,
 {
+    type Coord = S::Coord;
+
     #[inline]
-    fn size(&self) -> T {
+    fn size(&self) -> Self::Coord {
         S::SIZE
     }
     #[inline]
-    fn as_array(&self) -> [T; N] {
+    fn as_array(&self) -> [Self::Coord; N] {
         S::ARRAY
     }
     #[inline]
-    fn linearize(&self, p: [T; N]) -> T {
+    fn linearize(&self, p: [Self::Coord; N]) -> Self::Coord {
         S::linearize(p)
     }
     #[inline]
-    fn delinearize(&self, i: T) -> [T; N] {
+    fn delinearize(&self, i: Self::Coord) -> [Self::Coord; N] {
         S::delinearize(i)
     }
 }
