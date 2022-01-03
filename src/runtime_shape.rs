@@ -51,6 +51,7 @@ impl_shape2!(u8);
 impl_shape2!(u16);
 impl_shape2!(u32);
 impl_shape2!(u64);
+impl_shape2!(usize);
 
 impl_shape2!(i8);
 impl_shape2!(i16);
@@ -103,6 +104,7 @@ impl_shape3!(u8);
 impl_shape3!(u16);
 impl_shape3!(u32);
 impl_shape3!(u64);
+impl_shape3!(usize);
 
 impl_shape3!(i8);
 impl_shape3!(i16);
@@ -159,6 +161,7 @@ impl_shape4!(u8);
 impl_shape4!(u16);
 impl_shape4!(u32);
 impl_shape4!(u64);
+impl_shape4!(usize);
 
 impl_shape4!(i8);
 impl_shape4!(i16);
@@ -217,6 +220,7 @@ impl_pow2_shape2!(u8);
 impl_pow2_shape2!(u16);
 impl_pow2_shape2!(u32);
 impl_pow2_shape2!(u64);
+impl_pow2_shape2!(usize);
 
 impl_pow2_shape2!(i8);
 impl_pow2_shape2!(i16);
@@ -272,6 +276,7 @@ impl_pow2_shape3!(u8);
 impl_pow2_shape3!(u16);
 impl_pow2_shape3!(u32);
 impl_pow2_shape3!(u64);
+impl_pow2_shape3!(usize);
 
 impl_pow2_shape3!(i8);
 impl_pow2_shape3!(i16);
@@ -334,6 +339,7 @@ impl_pow2_shape4!(u8);
 impl_pow2_shape4!(u16);
 impl_pow2_shape4!(u32);
 impl_pow2_shape4!(u64);
+impl_pow2_shape4!(usize);
 
 impl_pow2_shape4!(i8);
 impl_pow2_shape4!(i16);
