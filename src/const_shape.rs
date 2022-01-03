@@ -39,6 +39,7 @@ impl_const_shape2!(ConstShape2u8, u8);
 impl_const_shape2!(ConstShape2u16, u16);
 impl_const_shape2!(ConstShape2u32, u32);
 impl_const_shape2!(ConstShape2u64, u64);
+impl_const_shape2!(ConstShape2usize, usize);
 
 impl_const_shape2!(ConstShape2i8, i8);
 impl_const_shape2!(ConstShape2i16, i16);
@@ -86,6 +87,7 @@ impl_const_shape3!(ConstShape3u8, u8);
 impl_const_shape3!(ConstShape3u16, u16);
 impl_const_shape3!(ConstShape3u32, u32);
 impl_const_shape3!(ConstShape3u64, u64);
+impl_const_shape3!(ConstShape3usize, usize);
 
 impl_const_shape3!(ConstShape3i8, i8);
 impl_const_shape3!(ConstShape3i16, i16);
@@ -140,6 +142,7 @@ impl_const_shape4!(ConstShape4u8, u8);
 impl_const_shape4!(ConstShape4u16, u16);
 impl_const_shape4!(ConstShape4u32, u32);
 impl_const_shape4!(ConstShape4u64, u64);
+impl_const_shape4!(ConstShape4usize, usize);
 
 impl_const_shape4!(ConstShape4i8, i8);
 impl_const_shape4!(ConstShape4i16, i16);
@@ -186,6 +189,7 @@ impl_const_pow2_shape2!(ConstPow2Shape2u8, u8);
 impl_const_pow2_shape2!(ConstPow2Shape2u16, u16);
 impl_const_pow2_shape2!(ConstPow2Shape2u32, u32);
 impl_const_pow2_shape2!(ConstPow2Shape2u64, u64);
+impl_const_pow2_shape2!(ConstPow2Shape2usize, usize);
 
 impl_const_pow2_shape2!(ConstPow2Shape2i8, i8);
 impl_const_pow2_shape2!(ConstPow2Shape2i16, i16);
@@ -239,6 +243,7 @@ impl_const_pow2_shape3!(ConstPow2Shape3u8, u8);
 impl_const_pow2_shape3!(ConstPow2Shape3u16, u16);
 impl_const_pow2_shape3!(ConstPow2Shape3u32, u32);
 impl_const_pow2_shape3!(ConstPow2Shape3u64, u64);
+impl_const_pow2_shape3!(ConstPow2Shape3usize, usize);
 
 impl_const_pow2_shape3!(ConstPow2Shape3i8, i8);
 impl_const_pow2_shape3!(ConstPow2Shape3i16, i16);
@@ -296,6 +301,7 @@ impl_const_pow2_shape4!(ConstPow2Shape4u8, u8);
 impl_const_pow2_shape4!(ConstPow2Shape4u16, u16);
 impl_const_pow2_shape4!(ConstPow2Shape4u32, u32);
 impl_const_pow2_shape4!(ConstPow2Shape4u64, u64);
+impl_const_pow2_shape4!(ConstPow2Shape4usize, usize);
 
 impl_const_pow2_shape4!(ConstPow2Shape4i8, i8);
 impl_const_pow2_shape4!(ConstPow2Shape4i16, i16);
