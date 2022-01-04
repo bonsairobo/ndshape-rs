@@ -16,6 +16,7 @@ macro_rules! impl_const_shape2 {
 
             const ARRAY: [$scalar; 2] = [X, Y];
             const SIZE: $scalar = X * Y;
+            const USIZE: usize = Self::SIZE as usize;
 
             #[inline]
             fn linearize(p: [$scalar; 2]) -> $scalar {
@@ -62,6 +63,7 @@ macro_rules! impl_const_shape3 {
 
             const ARRAY: [$scalar; 3] = [X, Y, Z];
             const SIZE: $scalar = X * Y * Z;
+            const USIZE: usize = Self::SIZE as usize;
 
             #[inline]
             fn linearize(p: [$scalar; 3]) -> $scalar {
@@ -112,6 +114,7 @@ macro_rules! impl_const_shape4 {
 
             const ARRAY: [$scalar; 4] = [X, Y, Z, W];
             const SIZE: $scalar = X * Y * Z * W;
+            const USIZE: usize = Self::SIZE as usize;
 
             #[inline]
             fn linearize(p: [$scalar; 4]) -> $scalar {
@@ -168,6 +171,7 @@ macro_rules! impl_const_pow2_shape2 {
 
             const ARRAY: [$scalar; 2] = [1 << X, 1 << Y];
             const SIZE: $scalar = 1 << (X + Y);
+            const USIZE: usize = Self::SIZE as usize;
 
             #[inline]
             fn linearize(p: [$scalar; 2]) -> $scalar {
@@ -218,6 +222,7 @@ macro_rules! impl_const_pow2_shape3 {
 
             const ARRAY: [$scalar; 3] = [1 << X, 1 << Y, 1 << Z];
             const SIZE: $scalar = 1 << (X + Y + Z);
+            const USIZE: usize = Self::SIZE as usize;
 
             #[inline]
             fn linearize(p: [$scalar; 3]) -> $scalar {
@@ -275,6 +280,7 @@ macro_rules! impl_const_pow2_shape4 {
 
             const ARRAY: [$scalar; 4] = [1 << X, 1 << Y, 1 << Z, 1 << W];
             const SIZE: $scalar = 1 << (X + Y + Z + W);
+            const USIZE: usize = Self::SIZE as usize;
 
             #[inline]
             fn linearize(p: [$scalar; 4]) -> $scalar {

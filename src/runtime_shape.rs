@@ -33,6 +33,11 @@ macro_rules! impl_shape2 {
             }
 
             #[inline]
+            fn usize(&self) -> usize {
+                self.size as usize
+            }
+
+            #[inline]
             fn linearize(&self, p: [$scalar; 2]) -> $scalar {
                 p[0] + self.strides[1].wrapping_mul(p[1])
             }
@@ -81,6 +86,11 @@ macro_rules! impl_shape3 {
             #[inline]
             fn size(&self) -> $scalar {
                 self.size
+            }
+
+            #[inline]
+            fn usize(&self) -> usize {
+                self.size as usize
             }
 
             #[inline]
@@ -134,6 +144,11 @@ macro_rules! impl_shape4 {
             #[inline]
             fn size(&self) -> $scalar {
                 self.size
+            }
+
+            #[inline]
+            fn usize(&self) -> usize {
+                self.size as usize
             }
 
             #[inline]
@@ -204,6 +219,11 @@ macro_rules! impl_pow2_shape2 {
             }
 
             #[inline]
+            fn usize(&self) -> usize {
+                self.size as usize
+            }
+
+            #[inline]
             fn linearize(&self, p: [$scalar; 2]) -> $scalar {
                 (p[1] << self.shifts[1]) | p[0]
             }
@@ -253,6 +273,11 @@ macro_rules! impl_pow2_shape3 {
             #[inline]
             fn size(&self) -> $scalar {
                 self.size
+            }
+
+            #[inline]
+            fn usize(&self) -> usize {
+                self.size as usize
             }
 
             #[inline]
@@ -315,6 +340,11 @@ macro_rules! impl_pow2_shape4 {
             #[inline]
             fn size(&self) -> $scalar {
                 self.size
+            }
+
+            #[inline]
+            fn usize(&self) -> usize {
+                self.size as usize
             }
 
             #[inline]

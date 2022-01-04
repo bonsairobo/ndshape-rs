@@ -103,6 +103,8 @@ pub trait Shape<const N: usize> {
 
     /// The number of elements in an array with this shape.
     fn size(&self) -> Self::Coord;
+    /// The same as `self.size() as usize`.
+    fn usize(&self) -> usize;
     /// The dimensions of the shape.
     fn as_array(&self) -> [Self::Coord; N];
     /// Translate an `N`-dimensional vector into a single number `T` that can be used for linear indexing.
@@ -117,6 +119,8 @@ pub trait ConstShape<const N: usize> {
 
     /// The number of elements in an array with this shape.
     const SIZE: Self::Coord;
+    /// Same as `Self::SIZE as usize`.
+    const USIZE: usize;
     /// The dimensions of the shape.
     const ARRAY: [Self::Coord; N];
     /// Translate an `N`-dimensional vector into a single number `T` that can be used for linear indexing.
@@ -152,6 +156,10 @@ where
     #[inline]
     fn size(&self) -> Self::Coord {
         S::SIZE
+    }
+    #[inline]
+    fn usize(&self) -> usize {
+        S::USIZE
     }
     #[inline]
     fn as_array(&self) -> [Self::Coord; N] {
